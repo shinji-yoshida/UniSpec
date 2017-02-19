@@ -3,12 +3,12 @@ using System;
 
 namespace UniSpec {
 	public class Context : Executable {
-		string mesage;
+		string message;
 		List<Action> beforeEachActions;
 		List<Executable> executables;
 
 		public Context (string message) {
-			this.mesage = message;
+			this.message = message;
 			beforeEachActions = new List<Action> ();
 			executables = new List<Executable> ();
 		}
@@ -21,11 +21,14 @@ namespace UniSpec {
 			executables.Add (executable);
 		}
 
-		public void Execute (ExecutionContext execContext) {
+		public SpecResult Execute (ExecutionContext execContext) {
+			var specResult = new CompositeSpecResult (message);
 			execContext.AddBeforeEachActions (beforeEachActions);
 			foreach (var each in executables)
-				each.Execute (execContext);
+				specResult.AddSpecResult(each.Execute (execContext));
+			
 			execContext.RemoveBeforeEachActions (beforeEachActions);
+			return specResult;
 		}
 
 		protected void RunBeforeEachs () {

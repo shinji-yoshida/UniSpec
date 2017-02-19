@@ -1,6 +1,6 @@
 ﻿
 namespace UniSpec {
 	public interface Executable {
-		void Execute (ExecutionContext execContext);
+		SpecResult Execute (ExecutionContext execContext);
 	}
 }

@@ -2,6 +2,7 @@
 using NUnit.Framework;
 using System;
 using UnityEngine;
+using System.Linq;
 
 namespace UniSpec {
 	public class SpecSuite {
@@ -23,7 +24,25 @@ namespace UniSpec {
 			descriptionBuilder ();
 			contexts.Pop ();
 
-			description.Execute (execContext);
+			var specResult = description.Execute (execContext);
+
+			var summaryHeader = string.Format ("-------------------------------\n<color={2}>{0} specs, {1} failures</color>\n-------------------------------",
+				specResult.SpecCount, specResult.FailureCount, specResult.HasFailure() ? "red" : "green");
+
+			var summaryBody = string.Join("\n", specResult.ToSummaryLines ().ToArray());
+
+			var detailHeader = "stack traces:\n-------------------------------";
+
+			var detailBody = specResult.ToDetailedString ();
+
+			if (specResult.HasFailure ()) {
+				Debug.Log (string.Format("{0}\n\n{1}\n\n{2}\n\n{3}\n\n{0}\n\n\n", summaryHeader, summaryBody, detailHeader, detailBody));
+			} else {
+				Debug.Log (string.Format("{0}\n\n{1}\n\n{0}\n\n\n", summaryHeader, summaryBody));
+			}
+
+			if (specResult.HasFailure ())
+				throw specResult.FirstException ();
 		}
 
 		protected void Context(string message, Action contextBuilder) {

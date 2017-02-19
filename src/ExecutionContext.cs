@@ -14,9 +14,15 @@ namespace UniSpec {
 				beforeEachActions.Remove (each);
 		}
 
-		public void ExecuteBeforeEachActions () {
-			foreach (var each in beforeEachActions)
-				each ();
+		public void ExecuteBeforeEachActions (ExampleSpecResult specResult) {
+			foreach (var each in beforeEachActions) {
+				try {
+					each ();
+				}
+				catch(Exception e) {
+					specResult.ReportFailure (e);
+				}
+			}
 		}
 	}
 }
