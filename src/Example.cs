@@ -21,6 +21,7 @@ namespace UniSpec {
 			catch(Exception e) {
 				result.ReportFailure (e);
 			}
+			execContext.ExecuteAfterEachActions (result);
 			return result;
 		}
 	}

@@ -64,5 +64,9 @@ namespace UniSpec {
 		protected void BeforeEach(Action beforeEachBuilder) {
 			contexts.Peek ().AddBeforeEach (beforeEachBuilder);
 		}
+
+		protected void AfterEach(Action afterEachBuilder) {
+			contexts.Peek ().AddAfterEach (afterEachBuilder);
+		}
 	}
 }
