@@ -61,6 +61,10 @@ namespace UniSpec {
 			contexts.Peek ().AddExecutable (example);
 		}
 
+		/// Ignore example
+		protected void XIt(string message, Action exampleBuilder) {
+		}
+
 		protected void BeforeEach(Action beforeEachBuilder) {
 			contexts.Peek ().AddBeforeEach (beforeEachBuilder);
 		}
